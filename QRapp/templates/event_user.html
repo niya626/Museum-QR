@@ -1,0 +1,88 @@
+{% extends "index.html" %}
+{% block content %}
+
+    <title>Available Events</title>
+
+    <div class="container mt-5">
+        <h2 class="text-center">Available Events</h2>
+        <div class="list-group">
+            {% for event in events %}
+            <div class="list-group-item">
+                <h5>{{ event.name }}</h5>
+                <p>{{ event.description|linebreaks|safe }}</p>
+                <p><strong>Date:</strong> {{ event.event_date }}</p>
+                <a href="{% url 'apply_for_event' event.id %}" class="btn btn-primary">Apply</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    <style>
+        /* Custom styles for Available Events page */
+
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.list-group-item {
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.list-group-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.list-group-item h5 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.list-group-item p {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+.list-group-item a.btn {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+.list-group-item a.btn:hover {
+    background-color: #218838; /* Darker green on hover */
+    border-color: #218838;
+}
+
+@media (max-width: 768px) {
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .list-group-item {
+        padding: 1rem;
+    }
+
+    .list-group-item h5 {
+        font-size: 1.25rem;
+    }
+
+    .list-group-item p {
+        font-size: 0.875rem;
+    }
+
+    .list-group-item a.btn {
+        font-size: 0.875rem;
+    }
+}
+
+    </style>
+{% endblock %}
