@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -9,18 +8,23 @@ from .models import*
 from datetime import datetime
 from django.core.paginator import Paginator
 import qrcode
+from django.utils.translation import get_language
 import os
 from django.conf import settings
 from .models import Exhibit, Category, Image 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from datetime import timedelta
-import time
-from django.core.exceptions import ValidationError
-from django.db.models import Q
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.files.storage import default_storage
+from .models import Event, EventApplication
+from django.http import JsonResponse
+from django.shortcuts import render
+from datetime import datetime, timedelta
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.utils import timezone
 from .models import Event, EventApplication
 # Your existing view functions here
 
@@ -355,7 +359,6 @@ def admin_add_exhibit(request):
 
 
 # List all exhibits with pagination
-from django.utils.translation import get_language
 
 def list_exhibits(request):
     exhibits = Exhibit.objects.all()
@@ -537,10 +540,6 @@ def generate_qr_code(data, exhibit_id):
 
 
 
-from django.http import JsonResponse
-from django.shortcuts import render
-from datetime import datetime, timedelta
-
 def admin_add_event(request):
     if request.method == 'POST':
         event_name = request.POST.get('event_name')
@@ -611,10 +610,7 @@ def admin_event_applications(request):
     return render(request, 'admin/event_applications.html', {'applications': applications_page})
 
 
-from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
-from django.utils import timezone
-from .models import Event, EventApplication
+
 
 SCHOOL_KEYWORDS = ["school", "academy", "institution", "college", "high school"]
 

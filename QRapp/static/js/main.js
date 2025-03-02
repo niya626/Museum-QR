@@ -374,3 +374,25 @@ function changeImage() {
 
 // Call the function every 3 seconds
 setInterval(changeImage, 3000);
+
+const scannerIcon = document.getElementById('scanner-icon-mobile');
+
+if (scannerIcon) {
+    scannerIcon.addEventListener('click', function(event) {
+        event.stopPropagation(); // Prevents other elements from interfering
+        console.log('Scanner icon clicked');
+        openScanner(); // Call your scanner function
+    });
+
+    scannerIcon.addEventListener('touchstart', function(event) {
+        event.stopPropagation();
+        console.log('Scanner icon touched');
+        openScanner(); // Call your scanner function
+    });
+}
+
+function openScanner() {
+    alert('Scanner activated'); // Replace with actual scanner logic
+}
+
+

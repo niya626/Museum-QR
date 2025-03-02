@@ -530,14 +530,15 @@ ul {
     font-size: 28px;
     color: #000000;
     cursor: pointer;
-    position: fixed;
-    right: 50px; /* Adjusted for better alignment */
+    position: absolute;
+    right: 80px; /* Adjusted for better alignment */
     top: 10px;
     transition: transform 0.3s ease-in-out;
-    z-index: 9999;
+    z-index: 1100;
     transform: translateZ(0); /* Prevents flickering */
     -webkit-transform: translateZ(0); /* Safari fix */
     width: 40px;
+    pointer-events: auto;
     height: 40px;
     align-items: center;
     justify-content: center;
@@ -547,6 +548,7 @@ ul {
 #header-main #scanner-icon-mobile:hover {
     transform: scale(1.1);
 }
+
 
     /* Adjust the layout of the header-main to accommodate both elements */
     #header-main .container {
