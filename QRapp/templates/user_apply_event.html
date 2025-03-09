@@ -35,7 +35,9 @@
                     <label for="user_type" class="form-label">Applying As</label>
                     <select class="form-control" id="user_type" name="user_type" required>
                         <option value="individual">Individual</option>
-                        <option value="school">School</option>
+                        <option value="school">School</option>                                            
+                        <option value="high school">High school</option>
+                        <option value="academy" >Academy</option> 
                     </select>
                 </div>
 
@@ -124,35 +126,52 @@
 
     document.addEventListener('DOMContentLoaded', function () {
     const userTypeSelect = document.getElementById('user_type');
+    const membersInputDiv = document.getElementById('members').parentElement;
     const membersInput = document.getElementById('members');
     const membersDetailsContainer = document.getElementById('membersDetails');
 
     function updateMemberFields() {
-        let membersCount = parseInt(membersInput.value);
         let userType = userTypeSelect.value;
+
+        // Show 'Number of Members' only for school, academy, or high school
+        if (userType === 'school' || userType === 'academy' || userType === 'high school') {
+            membersInputDiv.style.display = 'block';
+        } else {
+            membersInputDiv.style.display = 'none';
+            membersDetailsContainer.innerHTML = ''; // Clear members' details when hidden
+            membersInput.value = ''; // Reset number of members
+        }
+    }
+    function generateMemberFields() {
+        let membersCount = parseInt(membersInput.value) || 0;
         membersDetailsContainer.innerHTML = '';
 
-        if (userType === 'school' && membersCount > 0) {
+        if ((userTypeSelect.value === 'school' || userTypeSelect.value === 'academy' || userTypeSelect.value === 'high school') && membersCount > 0) {
             for (let i = 1; i <= membersCount; i++) {
-                membersDetailsContainer.innerHTML += `
+                let memberFieldHTML = `
                     <div class="mb-3">
                         <h5>Student ${i}</h5>
                         <label class="form-label">Name</label>
                         <input type="text" class="form-control" name="member_name_${i}" required>
 
                         <label class="form-label">Phone</label>
-                        <input type="text" class="form-control" name="member_phone_${i}" required>
+                        <input type="text" class="form-control" name="member_phone_${i}" pattern="\\d{10}" title="Enter a valid 10-digit phone number" required>
 
                         <label class="form-label">Class</label>
                         <input type="text" class="form-control" name="member_class_${i}" required>
                     </div>
                 `;
+                membersDetailsContainer.insertAdjacentHTML('beforeend', memberFieldHTML);
             }
         }
     }
 
-    membersInput.addEventListener('input', updateMemberFields);
+    // Event Listeners
     userTypeSelect.addEventListener('change', updateMemberFields);
+    membersInput.addEventListener('input', generateMemberFields);
+
+    // Run on page load to set initial state
+    updateMemberFields();
 });
 
 </script>
@@ -184,6 +203,7 @@
         color: #666;
         margin-bottom: 1rem;
         text-align: center;
+        font-weight:500;
         animation: slideInFromTop 1s ease-out 0.3s;
     }
     .form-label {

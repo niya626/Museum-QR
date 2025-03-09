@@ -5,6 +5,9 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .models import*
+import re
+from django.utils.html import escape
+from django.db.models import Q
 from datetime import datetime
 from django.core.paginator import Paginator
 import qrcode
@@ -19,17 +22,12 @@ from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.files.storage import default_storage
 from .models import Event, EventApplication
-from django.http import JsonResponse
 from django.shortcuts import render
 from datetime import datetime, timedelta
 from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
 from django.utils import timezone
 from .models import Event, EventApplication
 # Your existing view functions here
-
-
-
 
 
 
@@ -37,8 +35,8 @@ def index(request):
     return render(request, 'index.html')
 
 # Home page view
-def home(request):
-    return render(request, 'index.html')
+def admin_home(request):
+    return render(request, 'admin_home.html')
 
 # About page view
 # def about(request):
@@ -140,41 +138,48 @@ def success(request):
 
 # Login page view
 
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+# def login_view(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
-            login(request, user)
-            return redirect('home')  # Redirect to home after login
-        else:
-            messages.error(request, "Invalid username or password.")
-            return redirect('login')  # Redirect back to the login page
+#         if user is not None:
+#             login(request, user)
+#             return redirect('home')  
+#         # Redirect to home after login
+#         else:
+#             messages.error(request, "Invalid username or password.")
+#             return redirect('login')  
+#         # Redirect back to the login page
 
-    return render(request, 'login.html')  # Render the login page
+#     return render(request, 'login.html')
+  # Render the login page
 
 # Admin login view
 def admin_login(request):
-    # Define default admin credentials
-    DEFAULT_USERNAME = 'admin'
-    DEFAULT_PASSWORD = '123'
+    # Define multiple default admin credentials
+    ADMIN_CREDENTIALS = {
+        'Admin@12': '123admin',
+        '#Museum25': '456museum',  # Add more username-password pairs here
+    }
 
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        if username == DEFAULT_USERNAME and password == DEFAULT_PASSWORD:
-            user, created = User.objects.get_or_create(username=DEFAULT_USERNAME)
+        # Check if username exists and password matches
+        if username in ADMIN_CREDENTIALS and password == ADMIN_CREDENTIALS[username]:
+            user, created = User.objects.get_or_create(username=username)
             if created:
-                user.set_password(DEFAULT_PASSWORD)
+                user.set_password(password)
                 user.is_staff = True
                 user.is_superuser = True
                 user.save()
 
             login(request, user)
-            return redirect('admin_home')  # Redirect to the admin home page
+            return redirect('admin_home')  # Redirect to admin home page
+
         else:
             messages.error(request, "Invalid username or password.")
             return redirect('admin_login')
@@ -185,7 +190,7 @@ def admin_login(request):
 def admin_home(request):
     if not request.user.is_staff:
         messages.error(request, "You do not have permission to access this page.")
-        return redirect('login')
+        return redirect('admin_login')
     
     events = Event.objects.all()  # Fetching all events
     return render(request, 'admin/admin_home.html', {'events': events})  # Passing events to template
@@ -611,8 +616,11 @@ def admin_event_applications(request):
 
 
 
+# Regex patterns for validation
+PHONE_REGEX = re.compile(r'^\d{10}$')  # 10-digit phone number
+EMAIL_REGEX = re.compile(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')  # Standard email pattern
 
-SCHOOL_KEYWORDS = ["school", "academy", "institution", "college", "high school"]
+SCHOOL_KEYWORDS = ["school", "academy", "high school"]
 
 def apply_for_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
@@ -629,6 +637,13 @@ def apply_for_event(request, event_id):
         if not all([name, phone_no, email, address, members_count]):
             return JsonResponse({'success': False, 'error': 'Please fill in all fields.'})
 
+        if not PHONE_REGEX.match(phone_no):
+            return JsonResponse({'success': False, 'error': 'Invalid phone number. It must be 10 digits long.'})
+
+        
+        if not EMAIL_REGEX.match(email):
+            return JsonResponse({'success': False, 'error': 'Invalid email format.'})
+
         # Convert members_count to integer
         try:
             members_count = int(members_count)
@@ -637,25 +652,38 @@ def apply_for_event(request, event_id):
         except ValueError as e:
             return JsonResponse({'success': False, 'error': str(e)})
 
+         # Ensure user type is correct
+        if user_type not in ["individual", "school", "academy", "high school"]:
+            return JsonResponse({'success': False, 'error': 'Invalid user type selected.'})
+
         # Determine user type
-        if members_count > 1 or any(keyword in name.lower() for keyword in SCHOOL_KEYWORDS):
-            user_type = 'school'
+        if user_type in ["school", "academy", "high school"]:  # Ensure it's an institution
+            if members_count < 2:  # Institutions must have at least 2 members
+                return JsonResponse({'success': False, 'error': 'Schools must have at least 2 members.'})
+    
             school_name = name
             name = f"{school_name} - Students"
+        else:
+            if members_count > 1:  # Individual users can't register more than 1 person
+                return JsonResponse({'success': False, 'error': 'Individual users cannot add multiple members.'})
+
 
         # Prevent duplicate applications
-        if EventApplication.objects.filter(event=event, email=email).exists():
+        if EventApplication.objects.filter(Q(event=event), Q(email=email) | Q(phone_no=phone_no)).exists():
             return JsonResponse({'success': False, 'error': 'You have already applied for this event.'})
 
-        student_names = []
-        student_phones = []
-        student_classes = []
+        student_names, student_phones, student_classes = [], [], []
 
-        if user_type == 'school':
+        # Validate and collect school member details
+        if user_type in ["school", "academy", "high school"]:
+
             for i in range(1, members_count + 1):
-                member_name = request.POST.get(f'member_name_{i}', '').strip()
+                member_name = escape(request.POST.get(f'member_name_{i}', '').strip())
                 member_phone = request.POST.get(f'member_phone_{i}', '').strip()
-                member_class = request.POST.get(f'member_class_{i}', '').strip()
+                member_class = escape(request.POST.get(f'member_class_{i}', '').strip())
+
+                if member_phone and not PHONE_REGEX.match(member_phone):
+                    return JsonResponse({'success': False, 'error': f'Invalid phone number for member {i}.'})
 
                 if member_name and member_phone:
                     student_names.append(member_name)

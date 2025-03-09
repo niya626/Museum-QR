@@ -2,7 +2,16 @@
 {% block content %}
 
 <title>Event List</title>
-<br>
+
+<div class="container my-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'admin_home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_add_event' %}">Add Events</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Event List</li>
+        </ol>
+    </nav>
 <div class="card">
     <h2 class="text-center">Event List</h2>
     
@@ -57,6 +66,7 @@
             </table>
         </div>
     {% endif %}
+</div>
 </div>
 <br>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

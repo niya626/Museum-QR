@@ -1,7 +1,17 @@
 {% extends 'admin/admin_home.html' %}
 
 {% block content %}
-<br>
+
+<div class="container my-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'admin_home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_add_event' %}">Add Event</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_event_list' %}">Events List</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit Category</li>
+        </ol>
+    </nav>
 <h1 class="text-center mb-4">Event Applications</h1>
 
 <table class="table">
@@ -77,6 +87,7 @@
         {% endif %}
     </ul>
 </nav>
+</div>
 </div>
 <br>
 <style>

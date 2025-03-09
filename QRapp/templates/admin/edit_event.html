@@ -3,6 +3,17 @@
 
 <title>Edit Event</title>
 
+<div class="container my-4">
+    
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'admin_home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'admin_event_list' %}">events List</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Event</li>
+    </ol>
+</nav>
+
 <div class="card">
     <h2 class="text-center">Edit Event</h2>
     
@@ -121,7 +132,7 @@
         
     </form>
 </div>
-
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('edit-event-form');

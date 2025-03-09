@@ -9,6 +9,16 @@
 
 </head>
 
+<div class="container my-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'admin_home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_event_list' %}">Event List</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add New Event</li>
+        </ol>
+    </nav>
+
 <div class="container mt-5 event-form-container">
     <h2>Add New Event</h2>
     <form id="eventForm" enctype="multipart/form-data" method="POST">
@@ -101,7 +111,7 @@
         </div>
     </div>
 </div>
-
+</div>
 <script>
 // Handle form submission
 document.getElementById('eventForm').onsubmit = async function (e) {

@@ -20,8 +20,8 @@ class Category(models.Model):
 class Exhibit(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    name_ml = models.CharField(max_length=255, verbose_name=_('Name in Malayalam'), null=True, blank=True)
-    description_ml = models.TextField(verbose_name=_('Description in Malayalam'), null=True, blank=True)
+    name_ml = models.CharField(max_length=255, verbose_name=_('Name in Malayalam'), null=False, )
+    description_ml = models.TextField(verbose_name=_('Description in Malayalam'), null=False, blank=False)
     date = models.DateField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=[('active', 'Active'), ('inactive', 'Inactive')], default='active')
@@ -95,12 +95,14 @@ class Event(models.Model):
         # Delete the event image file if it exists
         if self.image:
            self.image.delete(save=False)
-        super().delete(*args, **kwargs)   
+        super().delete(*args, **kwargs) 
+          
 class EventApplication(models.Model):
     USER_TYPE_CHOICES = [
         ('individual', 'Individual'),
         ('school', 'School'),
-        ('other', 'Other'),
+        ('high school', 'high school'),
+        ('academy', 'academy'),
     ]
 
     event = models.ForeignKey(Event, on_delete=models.CASCADE)

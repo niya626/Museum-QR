@@ -53,10 +53,7 @@
                 
     <!-- Top Right Section -->
     <div class="col-6 top-head-right"> 
-    <!-- QR Code Scanner Icon -->
-    <a href="{% url 'qr_code_scanner' %}" id="scanner-icon-mobile">
-        <i class="fa-solid fa-qrcode" style="color: #000000;"></i>
-    </a>
+
     
     
     <!-- Social Media Links -->
@@ -75,7 +72,7 @@
     <header id="header-main">
         <div class="container">
             <div id="logo">
-                <a href="index.html"><img src="/static/img/elements/Logo.png" alt="Logo" title="Logo" /></a>
+                <a href="{% url 'admin_home' %}"><img src="/static/img/elements/Logo.png" alt="Logo" title="Logo" /></a>
             </div>
              <nav id="nav-menu-container">
                 <ul class="nav-menu">
@@ -134,11 +131,7 @@
                     <li><a href='/logout/'>Log Out</a></li>
                 </ul>
             </nav>
-        <!-- Placeholder for QR Scanner Icon in header-main -->
-        <a href="{% url 'qr_code_scanner' %}" id="scanner-icon-mobile">
-            <i class="fa-solid fa-qrcode" style="color: #000000;"></i>
-        </a>
-        
+
             <!-- Mobile Toggle Button -->
             <button id="mobile-nav-toggle">
                 <i class="lnr lnr-menu"></i> <!-- Default icon -->
@@ -330,8 +323,8 @@
                     <div class="footer-social d-flex align-items-center">
                         <a href="#"><i class="fa fa-facebook"></i></a>
                         <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-dribbble"></i></a>
-                        <a href="#"><i class="fa fa-behance"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fa fa-instagram"></i></a>
+						<a href="#" aria-label="Pinterest"><i class="fa fa-pinterest"></i></a>
                     </div>
                 </div>
             </div>

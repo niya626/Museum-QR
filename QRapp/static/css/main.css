@@ -2070,7 +2070,6 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 
 /* Banner Area */
-/* Banner Area */
 .banner-area {
   position: relative;
   height: 80vh; /* Set height for the banner */
@@ -2101,19 +2100,19 @@ body.mobile-nav-active #mobile-nav-toggle {
 /* Keyframes for background transitions */
 @keyframes fadeBackground {
   0%, 20% {
-    background-image: url(/static/img/elements/thrissur_multi.png);
+    background-image: url("/static/img/elements/thrissur_multi.png");
     opacity: 1;
   }
   25%, 45% {
-    background-image: url(/static/img/pages/thrissur_art.jpg);
+    background-image: url("/static/img/pages/thrissur_art.jpg");
     opacity: 1;
   }
   50%, 70% {
-    background-image: url(/static/img/elements/museum1.jpg);
+    background-image: url("/static/img/elements/museum1.jpg");
     opacity: 1;
   }
   75%, 100% {
-    background-image: url(/static/img/pages/thrissur_art.jpg);
+    background-image: url("/static/img/pages/thrissur_art.jpg");
     opacity: 1;
   }
 }
@@ -2380,6 +2379,10 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 /* Responsive Layout for Medium Screens (max-width: 1024px) */
 @media (max-width: 1024px) {
+  .banner-area {
+    height: 60vh; /* Adjust height for tablets */
+  }
+
   .first-paragraph {
     font-size: 16px; /* Slightly reduce font size on medium screens */
     margin-bottom: 30px; /* Reduce bottom margin */
@@ -2410,6 +2413,10 @@ body.mobile-nav-active #mobile-nav-toggle {
   .first-paragraph {
     font-size: 16px; /* Further reduce font size on smaller screens */
     margin-bottom: 20px; /* Reduce margin for compact screens */
+  }
+
+  .banner-area {
+    height: 50vh; /* Adjust height for mobile devices */
   }
 
   .history-heading {
@@ -2456,6 +2463,10 @@ body.mobile-nav-active #mobile-nav-toggle {
     margin-bottom: 15px; /* Adjust margin */
   }
 
+  .banner-area {
+    height: 40vh; /* Further reduction for smaller screens */
+  }
+  
   .history-heading {
     font-size: 24px;
   }

@@ -170,7 +170,7 @@
   
   <div class="container">
     <div class="myform">
-      <form id="loginForm" method="POST" action="{% url 'login' %}">
+      <form id="loginForm" method="POST" action="{% url 'admin_login' %}">
         {% csrf_token %}
         <h2>ADMIN LOGIN</h2>
         <input type="text" name="username" id="username" placeholder="Admin Name" required>
