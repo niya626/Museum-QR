@@ -2104,7 +2104,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     opacity: 1;
   }
   25%, 45% {
-    background-image: url("/static/img/pages/thrissur_art.jpg");
+    background-image: url("/static/img/elements/thrissur_art.jpg");
     opacity: 1;
   }
   50%, 70% {
@@ -2112,7 +2112,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     opacity: 1;
   }
   75%, 100% {
-    background-image: url("/static/img/pages/thrissur_art.jpg");
+    background-image: url("/static/img/elements/thrissur_art.jpg");
     opacity: 1;
   }
 }
@@ -2714,6 +2714,47 @@ body.mobile-nav-active #mobile-nav-toggle {
     text-align: left;
   }
 }
+
+.footer-credit {
+  width: 100%;
+  font-size: 15px;
+  color: #888;
+  text-align: center;
+  padding: 15px 10px;
+  background-color: #040021;
+  border-top: 1px solid #ddd;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
+  box-sizing: border-box;
+  position: relative;
+  top: 60px; /* Move the whole credit block slightly down */
+}
+
+.footer-credit strong {
+  color: #ffffff;
+}
+
+.footer-credit:hover {
+  color: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-credit {
+    font-size: 13px;
+    top: 8px; /* Little less on tablet */
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-credit {
+    font-size: 12px;
+    top: 6px; /* Even smaller on mobile */
+  }
+}
+
+
+
 
 .single-footer-widget input {
   border: none;

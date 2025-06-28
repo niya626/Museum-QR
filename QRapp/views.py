@@ -8,7 +8,6 @@ from .models import*
 import re
 from django.utils.html import escape
 from django.db.models import Q
-from datetime import datetime
 from django.core.paginator import Paginator
 import qrcode
 from django.utils.translation import get_language
@@ -17,15 +16,12 @@ from django.conf import settings
 from .models import Exhibit, Category, Image 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from datetime import timedelta
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.files.storage import default_storage
 from .models import Event, EventApplication
-from django.shortcuts import render
 from datetime import datetime, timedelta
 from django.shortcuts import render, get_object_or_404
-from django.utils import timezone
 from .models import Event, EventApplication
 # Your existing view functions here
 

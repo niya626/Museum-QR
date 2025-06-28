@@ -395,4 +395,3 @@ function openScanner() {
     alert('Scanner activated'); // Replace with actual scanner logic
 }
 
-
